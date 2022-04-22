@@ -3,6 +3,7 @@
 ## Requirements
 - Docker
 - Postman
+- Ubuntu is strongly recommended (MacOS is also good to go).
 
 ## Project Booting
 
@@ -11,12 +12,12 @@
 cp .env.example .env
 ```
 
-### Inside project root folder Run below command to start docker
+### Inside the project root folder, Run the below command to start docker
 ```bash
 docker-compose up
 ```
 
-### After running all docker containers run another command to enter container bash
+### After running all docker containers, run another command to enter container bash
 ```bash
 docker-compose exec api bash
 ```
@@ -36,4 +37,11 @@ php bin/console doctrine:fixture:load -n
 ```
 
 ## Testing
-Vehicle CURD will run on `http://localhost/` so import `./vehicle.postman_collection.json` to Postman app for the testing of CURD.
+Vehicle CURD will run on `http://localhost/`, so import `./vehicle.postman_collection.json` to the Postman app for the testing of CURD.
+All the parameters and queries documents are in the postman collection.
+
+## Project Terminate
+Run below command in the host bash to turn off all docker containers
+```bash
+docker-compose down
+```
