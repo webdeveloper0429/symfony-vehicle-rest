@@ -2,19 +2,31 @@
 
 namespace App\Controller;
 
+use App\Services\VehicleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class VehicleController extends AbstractController
 {
-    #[Route('/vehicle', name: 'app_vehicle')]
-    public function index(): Response
+    private VehicleService $vehicleService;
+    
+    public function __construct(VehicleService $vehicleService)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/VehicleController.php',
-        ]);
+        $this->vehicleService = $vehicleService;
+    }
+
+    /**
+     * @Route("/vehicles", name="get_all_vehicles", methods={"GET"})
+     */
+    public function getAllVehicles(Request $request): JsonResponse
+    {
+        $params = $request->query->all();
+        $data = $this->vehicleService->getVehiclesList($params);
+
+        return new JsonResponse(['success' => true, 'data' => $data]);
     }
 
 }

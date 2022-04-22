@@ -6,6 +6,7 @@ use App\Entity\Vehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,22 +48,30 @@ class VehicleRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Vehicle[] Returns an array of Vehicle objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param mixed[] $params
+     */
+    public function getList(array $params): QueryBuilder
     {
+        $search = $params['search'] ?? '';
+        $order = $params['order'] ?? 'id';
+        $direction = $params['direction'] ?? 'ASC';
+        $limit = $params['limit'] ?? 10;
+        $offset = $params['offset'] ?? 0;
+
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            ->orWhere('v.year LIKE :val')
+            ->setParameter('val', "%{$search}%")
+            ->orWhere('v.make LIKE :val')
+            ->setParameter('val', "%{$search}%")
+            ->orWhere('v.model LIKE :val')
+            ->setParameter('val', "%{$search}%")
+            ->andWhere('v.deleted = 0')
+            ->orderBy("v.{$order}", $direction)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Vehicle
