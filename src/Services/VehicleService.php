@@ -101,4 +101,22 @@ class VehicleService
 
         return $vehicle;
     }
+
+    /**
+     *
+     * @return void
+     */
+    public function deleteVehicle(int $id)
+    {
+        $vehicle = $this->vehicleRepository->find($id);
+        if (!$vehicle) {
+            throw new NotFoundHttpException('No vehicle found for id ' . $id);
+        }
+
+        $vehicle
+            ->setDeleted(true);
+
+        $this->entityManager->persist($vehicle);
+        $this->entityManager->flush();
+    }
 }

@@ -68,7 +68,7 @@ class VehicleController extends AbstractController
     /**
      * @Route("/vehicles/{id}", name="update_vehicle", methods={"PATCH"}, requirements={"id"="\d+"})
      */
-    public function updateVehicle($id, Request $request): JsonResponse
+    public function updateVehicle(int $id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -87,5 +87,15 @@ class VehicleController extends AbstractController
         $updatedVehicle = $this->vehicleService->updateVehicle($id, $type, $msrp, $year, $make, $model, $miles, $vin);
 
         return new JsonResponse(['success' => true, 'data' => $updatedVehicle->toArray()]);
+    }
+
+    /**
+     * @Route("/vehicles/{id}", name="delete_vehicle", methods={"DELETE"}, requirements={"id"="\d+"})
+     */
+    public function delete(int $id): JsonResponse
+    {
+        $this->vehicleService->deleteVehicle($id);
+
+        return new JsonResponse(['success' => true, 'data' => 'Vehicle Deleted!']);
     }
 }
