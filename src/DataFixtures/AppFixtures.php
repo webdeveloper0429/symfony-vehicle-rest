@@ -22,17 +22,17 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 50; $i++) {
             $fakeCar = $this->faker->vehicleArray();
             
-            $product = new Vehicle();
-            $product->setDateAdded($this->faker->dateTimeBetween('-1 week'));
-            $product->setType($this->faker->randomElement([Vehicle::TYPE_NEW, Vehicle::TYPE_USED]));
-            $product->setMsrp($this->faker->randomFloat(2, 10000, 1000000));
-            $product->setYear($this->faker->biasedNumberBetween(1998,2017, 'sqrt'));
-            $product->setMake($fakeCar['brand']);
-            $product->setModel($fakeCar['model']);
-            $product->setMiles($this->faker->randomNumber(5, false));
-            $product->setVin($this->faker->vin());
-            $product->setDeleted(false);
-            $manager->persist($product);
+            $vehicle = new Vehicle();
+            $vehicle->setDateAdded($this->faker->dateTimeBetween('-1 week'));
+            $vehicle->setType($this->faker->randomElement([Vehicle::TYPE_NEW, Vehicle::TYPE_USED]));
+            $vehicle->setMsrp($this->faker->randomFloat(2, 10000, 1000000));
+            $vehicle->setYear($this->faker->biasedNumberBetween(1998,2017, 'sqrt'));
+            $vehicle->setMake($fakeCar['brand']);
+            $vehicle->setModel($fakeCar['model']);
+            $vehicle->setMiles($this->faker->randomNumber(5, false));
+            $vehicle->setVin($this->faker->vin());
+            $vehicle->setDeleted(false);
+            $manager->persist($vehicle);
         }
         
         $manager->flush();
