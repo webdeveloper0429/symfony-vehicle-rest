@@ -32,22 +32,17 @@ class VehicleController extends AbstractController
     /**
      * @return JsonResponse|void
      *
-     * @Route("/vehicle/{id}", name="get_vehicle", methods={"GET"}, requirements={"id"="\d+"})
+     * @Route("/vehicles/{id}", name="get_vehicle", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function getVehicleById(int $id)
     {
         $vehicle = $this->vehicleService->getVehicleById($id);
-        if (!$vehicle) {
-            throw $this->createNotFoundException(
-                'No vehicle found for id ' . $id
-            );
-        }
 
         return new JsonResponse(['success' => true, 'data' => $vehicle->toArray()]);
     }
 
     /**
-     * @Route("/vehicle", name="save_vehicle", methods={"POST"})
+     * @Route("/vehicles", name="save_vehicle", methods={"POST"})
      */
     public function saveVehicle(Request $request): JsonResponse
     {
@@ -68,5 +63,29 @@ class VehicleController extends AbstractController
         $vehicle = $this->vehicleService->saveVehicle($type, $msrp, $year, $make, $model, $miles, $vin);
 
         return new JsonResponse(['success' => true, 'data' => $vehicle->toArray()]);
+    }
+
+    /**
+     * @Route("/vehicles/{id}", name="update_vehicle", methods={"PATCH"}, requirements={"id"="\d+"})
+     */
+    public function updateVehicle($id, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $type = $data['type'];
+        $msrp = $data['msrp'];
+        $year = $data['year'];
+        $make = $data['make'];
+        $model = $data['model'];
+        $miles = $data['miles'];
+        $vin = $data['vin'];
+
+        if (empty($make) || empty($model) || empty($year)) {
+            throw new NotFoundHttpException('Expecting mandatory parameters!');
+        }
+
+        $updatedVehicle = $this->vehicleService->updateVehicle($id, $type, $msrp, $year, $make, $model, $miles, $vin);
+
+        return new JsonResponse(['success' => true, 'data' => $updatedVehicle->toArray()]);
     }
 }
