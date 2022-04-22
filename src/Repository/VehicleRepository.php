@@ -69,8 +69,7 @@ class VehicleRepository extends ServiceEntityRepository
             ->andWhere('v.deleted = 0')
             ->orderBy("v.{$order}", $direction)
             ->setFirstResult($offset)
-            ->setMaxResults($limit)
-        ;
+            ->setMaxResults($limit);
     }
 
     public function findById(int $id): QueryBuilder
@@ -78,8 +77,7 @@ class VehicleRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('v')
             ->where('v.id = :val')
-            ->setParameter('val', $id)
-        ;
+            ->setParameter('val', $id);
     }
 
     /*

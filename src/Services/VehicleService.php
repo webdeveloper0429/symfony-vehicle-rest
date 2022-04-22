@@ -35,7 +35,6 @@ class VehicleService
     }
 
     /**
-     * @param mixed[] $params
      *
      * @return Vehicle|null
      */
