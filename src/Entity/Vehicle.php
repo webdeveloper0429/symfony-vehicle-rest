@@ -155,4 +155,20 @@ class Vehicle
 
         return $this;
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'date_added' => $this->getDateAdded(),
+            'type' => $this->getType(),
+            'msrp' => $this->getMsrp(),
+            'year' => $this->getYear(),
+            'make' => $this->getMake(),
+            'model' => $this->getModel(),
+            'miles' => $this->getMiles(),
+            'vin' => $this->getVin(),
+            'deleted' => $this->getDeleted(),
+        ];
+    }
 }

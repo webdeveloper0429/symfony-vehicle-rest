@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\Vehicle;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use App\Repository\VehicleRepository;
 
 class VehicleService
 {
+    private EntityManagerInterface $entityManager;
+
     private VehicleRepository $vehicleRepository;
 
-    public function __construct(VehicleRepository $vehicleRepository)
+    public function __construct(EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository)
     {
+        $this->entityManager = $entityManager;
         $this->vehicleRepository = $vehicleRepository;
     }
 
@@ -40,7 +44,30 @@ class VehicleService
      */
     public function getVehicleById(int $id)
     {
-        $qb = $this->vehicleRepository->findById($id);
-        return $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $vehicle = $this->vehicleRepository->find($id);
+        return $vehicle;
+    }
+
+    /**
+     *
+     * @return Vehicle
+     */
+    public function saveVehicle(string $type, float $msrp, int $year, string $make, string $model, int $miles, string $vin)
+    {
+        $newVehicle = new Vehicle();
+
+        $newVehicle
+            ->setDateAdded(new \DateTime())
+            ->setType($type)
+            ->setMsrp($msrp)
+            ->setYear($year)
+            ->setMake($make)
+            ->setModel($model)
+            ->setMiles($miles)
+            ->setVin($vin)
+            ->setDeleted(false);
+
+        $this->vehicleRepository->add($newVehicle);
+        return $newVehicle;
     }
 }

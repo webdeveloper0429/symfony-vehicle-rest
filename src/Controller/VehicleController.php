@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class VehicleController extends AbstractController
 {
@@ -42,6 +43,30 @@ class VehicleController extends AbstractController
             );
         }
 
-        return new JsonResponse(['success' => true, 'data' => $vehicle]);
+        return new JsonResponse(['success' => true, 'data' => $vehicle->toArray()]);
+    }
+
+    /**
+     * @Route("/vehicle", name="save_vehicle", methods={"POST"})
+     */
+    public function saveVehicle(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $type = $data['type'];
+        $msrp = $data['msrp'];
+        $year = $data['year'];
+        $make = $data['make'];
+        $model = $data['model'];
+        $miles = $data['miles'];
+        $vin = $data['vin'];
+
+        if (empty($make) || empty($model) || empty($year)) {
+            throw new NotFoundHttpException('Expecting mandatory parameters!');
+        }
+
+        $vehicle = $this->vehicleService->saveVehicle($type, $msrp, $year, $make, $model, $miles, $vin);
+
+        return new JsonResponse(['success' => true, 'data' => $vehicle->toArray()]);
     }
 }
