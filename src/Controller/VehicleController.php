@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VehicleController extends AbstractController
 {
     private VehicleService $vehicleService;
-    
+
     public function __construct(VehicleService $vehicleService)
     {
         $this->vehicleService = $vehicleService;
@@ -29,4 +29,20 @@ class VehicleController extends AbstractController
         return new JsonResponse(['success' => true, 'data' => $data]);
     }
 
+    /**
+     * @return JsonResponse|void
+     *
+     * @Route("/vehicle/{id}", name="get_vehicle", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function getVehicleById(int $id)
+    {
+        $vehicle = $this->vehicleService->getVehicleById($id);
+        if (!$vehicle) {
+            throw $this->createNotFoundException(
+                'No vehicle found for id ' . $id
+            );
+        }
+
+        return new JsonResponse(['success' => true, 'data' => $vehicle]);
+    }
 }

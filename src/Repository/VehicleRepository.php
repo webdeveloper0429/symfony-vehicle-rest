@@ -73,6 +73,15 @@ class VehicleRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findById(int $id): QueryBuilder
+    {
+
+        return $this->createQueryBuilder('v')
+            ->where('v.id = :val')
+            ->setParameter('val', $id)
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Vehicle
     {

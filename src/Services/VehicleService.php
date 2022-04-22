@@ -34,4 +34,14 @@ class VehicleService
         ];
     }
 
+    /**
+     * @param mixed[] $params
+     *
+     * @return Vehicle|null
+     */
+    public function getVehicleById(int $id)
+    {
+        $qb = $this->vehicleRepository->findById($id);
+        return $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+    }
 }
