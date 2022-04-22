@@ -21,10 +21,10 @@ services:
         restart: always
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: vehicle
-            MYSQL_USER: vehicle
-            MYSQL_PASSWORD: vehicle
+            MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+            MYSQL_DATABASE: "$MYSQL_DATABASE"
+            MYSQL_USER: "$MYSQL_USER"
+            MYSQL_PASSWORD: "$MYSQL_PASSWORD"
         volumes:
             - db:/var/lib/mysql
             
@@ -37,8 +37,8 @@ services:
             - 33060:80
         environment:
             PMA_HOST: db
-            PMA_USER: vehicle
-            PMA_PASSWORD: vehicle
+            PMA_USER: "$MYSQL_USER"
+            PMA_PASSWORD: "$MYSQL_PASSWORD"
         logging: 
             driver: "none"
 
